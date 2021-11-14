@@ -307,7 +307,7 @@ python_EVP_OpenFinal(EVP_CIPHER_CTX* ctx)
 
 %typemap(out) PyObject*
 {
-	$result = 1;
+	$result = $1;
 }
 
 %typemap(in) PyObject*
