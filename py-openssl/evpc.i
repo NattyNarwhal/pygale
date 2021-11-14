@@ -272,8 +272,6 @@ python_EVP_OpenFinal(EVP_CIPHER_CTX* ctx)
 	PyObject* return_obj;
 	char* unencrypted_data_buf;
 	int unencrypted_data_len;
-	char* encrypted_data_buf;
-	int encrypted_data_len;
 	int result;
 
 	unencrypted_data_len = EVP_CIPHER_CTX_block_size(ctx);
