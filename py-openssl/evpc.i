@@ -6,31 +6,11 @@
 #include "openssl/ssl.h"
 %}
 
-typedef struct {} EVP_MD_CTX;
+typedef struct EVP_MD_CTX;
 
-typedef struct
-{
-	int type;
-	int save_type;
-	int references;
-	union  
-	{
-		char *ptr;
-		RSA *rsa;	/* RSA */
-		struct dsa_st *dsa;	/* DSA */
-		struct dh_st *dh;	/* DH */
-	} pkey;
-	int save_parameters;
-	struct stack_st_X509_ATTRIBUTE *attributes; /* [ 0 ] */
-} EVP_PKEY;
+typedef struct EVP_PKEY;
 
 %{
-EVP_MD_CTX* 
-EVP_MD_CTX_new(void)
-{
-	return (EVP_MD_CTX*) malloc(sizeof(EVP_MD_CTX));
-}
-
 void
 EVP_MD_CTX_free(EVP_MD_CTX* ctx)
 {
@@ -73,12 +53,6 @@ python_EVP_SignFinal(EVP_MD_CTX* ctx, EVP_PKEY* pkey)
 	Py_DECREF(python_string);
 
 	return return_obj;
-}
-
-EVP_CIPHER_CTX* 
-EVP_CIPHER_CTX_new(void)
-{
-	return (EVP_CIPHER_CTX*) malloc(sizeof(EVP_CIPHER_CTX));
 }
 
 void
@@ -345,6 +319,10 @@ python_EVP_OpenFinal(EVP_CIPHER_CTX* ctx)
 {
 	$1 = PyString_AsString($input);
 }
+
+/*  */
+int EVP_PKEY_set1_RSA(EVP_PKEY *pkey, RSA *key);
+RSA *EVP_PKEY_get0_RSA(EVP_PKEY *pkey);
 
 int		EVP_PKEY_assign_RSA(EVP_PKEY *pkey, RSA *rsa_key);
 EVP_PKEY*	EVP_PKEY_new(void);

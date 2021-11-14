@@ -52,7 +52,7 @@ class PKEY(wrap.Wrapper):
 	def __init__(self, ptr = None):
 		attr_dict = \
 		{
-			'pkey': (evpc.EVP_PKEY_pkey_get, None, PKEY_pkey),
+			'rsa': (evpc.EVP_PKEY_get0_RSA, evpc.EVP_PKEY_set1_RSA, rsa.RSA),
 		}
 		wrap.Wrapper.__init__(self, ptr, evpc.EVP_PKEY_new, evpc.EVP_PKEY_free, attr_dict)
 
@@ -60,16 +60,6 @@ class PKEY(wrap.Wrapper):
 	def assign_RSA(self, rsa_key): 
 		evpc.EVP_PKEY_assign_RSA(self.ptr, rsa_key.ptr)
 		rsa_key.free_ptr = 0
-
-
-
-class PKEY_pkey(wrap.Wrapper):
-	def __init__(self, ptr):
-		attr_dict = \
-		{
-			'rsa': (evpc.EVP_PKEY_pkey_rsa_get, evpc.EVP_PKEY_pkey_rsa_set, rsa.RSA),
-		}
-		wrap.Wrapper.__init__(self, ptr, None, None, attr_dict)
 
 
 

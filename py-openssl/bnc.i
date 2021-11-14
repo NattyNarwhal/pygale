@@ -7,7 +7,7 @@
 %}
 
 
-typedef struct {} BIGNUM;
+typedef struct BIGNUM;
 
 %typemap(in) const unsigned char * 
 {
@@ -45,3 +45,4 @@ BIGNUM *BN_bin2bn(const unsigned char *s,int len,BIGNUM *ret);
 BIGNUM *BN_new(void);
 char   *BN_bn2hex(const BIGNUM *a);
 void	BN_free(BIGNUM* bn);
+

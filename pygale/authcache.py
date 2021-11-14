@@ -351,7 +351,7 @@ def import_v3_privkey(key):
   fraglist = gale_pack.group_to_FragList(key, DAN_IS_STOOPID=1)
   privkey = openssl.evp.PKEY()
   privkey.assign_RSA(openssl.rsa.RSA())
-  rsa = privkey.pkey.rsa
+  rsa = privkey.rsa
   rsa.n = openssl.bn.bin2bn(fraglist.get_binary_first('rsa.modulus'))
   rsa.e = openssl.bn.bin2bn(fraglist.get_binary_first('rsa.exponent'))
   rsa.d = openssl.bn.bin2bn(fraglist
@@ -375,19 +375,19 @@ def import_v1or2_privkey(key):
     pygale.call_error_handler('wrong number of bits in private key')
     return None
   (modulus, key) = gale_pack.pop_rle(key, GALE_RSA_MODULUS_LEN)
-  privkey.pkey.rsa.n = openssl.bn.bin2bn(modulus)
+  privkey.rsa.n = openssl.bn.bin2bn(modulus)
   (pubexp, key) = gale_pack.pop_rle(key, GALE_RSA_MODULUS_LEN)
-  privkey.pkey.rsa.e = openssl.bn.bin2bn(pubexp)
+  privkey.rsa.e = openssl.bn.bin2bn(pubexp)
   (exp, key) = gale_pack.pop_rle(key, GALE_RSA_MODULUS_LEN)
-  privkey.pkey.rsa.d = openssl.bn.bin2bn(exp)
+  privkey.rsa.d = openssl.bn.bin2bn(exp)
   (prime, key) = gale_pack.pop_rle(key, GALE_RSA_PRIME_LEN*2)
-  privkey.pkey.rsa.p = openssl.bn.bin2bn(prime[:GALE_RSA_PRIME_LEN])
-  privkey.pkey.rsa.q = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN])
+  privkey.rsa.p = openssl.bn.bin2bn(prime[:GALE_RSA_PRIME_LEN])
+  privkey.rsa.q = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN])
   (primeexp, key) = gale_pack.pop_rle(key, GALE_RSA_PRIME_LEN*2)
-  privkey.pkey.dmp1 = openssl.bn.bin2bn(primeexp[:GALE_RSA_PRIME_LEN])
-  privkey.pkey.dmq1 = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN:])
+  privkey.rsa.dmp1 = openssl.bn.bin2bn(primeexp[:GALE_RSA_PRIME_LEN])
+  privkey.rsa.dmq1 = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN:])
   (coef, key) = gale_pack.pop_rle(key, GALE_RSA_PRIME_LEN)
-  privkey.pkey.iqmp = openssl.bn.bin2bn(coef)
+  privkey.rsa.iqmp = openssl.bn.bin2bn(coef)
   return privkey
 
 def import_privkey(key):

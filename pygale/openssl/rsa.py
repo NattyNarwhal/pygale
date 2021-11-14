@@ -45,16 +45,16 @@ import bn
 class RSA(wrap.Wrapper):
   def __init__(self, ptr = None):
     attr_dict = \
-    {
-      'flags': (rsac.RSA_flags_get, rsac.RSA_flags_set, None),
-      'iqmp': (rsac.RSA_iqmp_get, rsac.RSA_iqmp_set, bn.BIGNUM),
-      'dmq1': (rsac.RSA_dmq1_get, rsac.RSA_dmq1_set, bn.BIGNUM),
-      'dmp1': (rsac.RSA_dmp1_get, rsac.RSA_dmp1_set, bn.BIGNUM),
-      'q': (rsac.RSA_q_get, rsac.RSA_q_set, bn.BIGNUM),
-      'p': (rsac.RSA_p_get, rsac.RSA_p_set, bn.BIGNUM),
-      'd': (rsac.RSA_d_get, rsac.RSA_d_set, bn.BIGNUM),
-      'e': (rsac.RSA_e_get, rsac.RSA_e_set, bn.BIGNUM),
-      'n': (rsac.RSA_n_get, rsac.RSA_n_set, bn.BIGNUM),
+    { # XXX: Fix setters
+      'flags': (rsac.RSA_flags, rsac.RSA_set_flags, None),
+      'iqmp': (rsac.RSA_get0_iqmp, rsac.py_RSA_set0_iqmp, bn.BIGNUM),
+      'dmq1': (rsac.RSA_get0_dmq1, rsac.py_RSA_set0_dmq1, bn.BIGNUM),
+      'dmp1': (rsac.RSA_get0_dmp1, rsac.py_RSA_set0_dmp1, bn.BIGNUM),
+      'q': (rsac.RSA_get0_q, rsac.py_RSA_set0_q, bn.BIGNUM),
+      'p': (rsac.RSA_get0_p, rsac.py_RSA_set0_p, bn.BIGNUM),
+      'd': (rsac.RSA_get0_d, rsac.py_RSA_set0_e, bn.BIGNUM),
+      'e': (rsac.RSA_get0_e, rsac.py_RSA_set0_e, bn.BIGNUM),
+      'n': (rsac.RSA_get0_n, rsac.py_RSA_set0_n, bn.BIGNUM),
     }
     wrap.Wrapper.__init__(self, ptr, rsac.RSA_new, rsac.RSA_free, attr_dict)
 
