@@ -352,18 +352,21 @@ def import_v3_privkey(key):
   privkey = openssl.evp.PKEY()
   privkey.assign_RSA(openssl.rsa.RSA())
   rsa = privkey.rsa
-  rsa.n = openssl.bn.bin2bn(fraglist.get_binary_first('rsa.modulus'))
-  rsa.e = openssl.bn.bin2bn(fraglist.get_binary_first('rsa.exponent'))
-  rsa.d = openssl.bn.bin2bn(fraglist
+  n = openssl.bn.bin2bn(fraglist.get_binary_first('rsa.modulus'))
+  e = openssl.bn.bin2bn(fraglist.get_binary_first('rsa.exponent'))
+  d = openssl.bn.bin2bn(fraglist
       .get_binary_first('rsa.private.exponent'))
+  rsa.set_key(n, e, d)
   prime_data = fraglist.get_binary_first('rsa.private.prime')
-  rsa.p = openssl.bn.bin2bn(prime_data[:GALE_RSA_PRIME_LEN])
-  rsa.q = openssl.bn.bin2bn(prime_data[GALE_RSA_PRIME_LEN:])
+  p = openssl.bn.bin2bn(prime_data[:GALE_RSA_PRIME_LEN])
+  q = openssl.bn.bin2bn(prime_data[GALE_RSA_PRIME_LEN:])
+  rsa.set_factors(p, q)
   prime_data = fraglist.get_binary_first('rsa.private.prime.exponent')
-  rsa.dmp1 = openssl.bn.bin2bn(prime_data[:GALE_RSA_PRIME_LEN])
-  rsa.dmq1 = openssl.bn.bin2bn(prime_data[GALE_RSA_PRIME_LEN:])
-  rsa.iqmp = openssl.bn.bin2bn(fraglist
+  dmp1 = openssl.bn.bin2bn(prime_data[:GALE_RSA_PRIME_LEN])
+  dmq1 = openssl.bn.bin2bn(prime_data[GALE_RSA_PRIME_LEN:])
+  iqmp = openssl.bn.bin2bn(fraglist
       .get_binary_first('rsa.private.coefficient'))
+  privkey.rsa.set_crt_params(dmp1, dmq1, iqmp)
   return privkey
 
 
@@ -375,19 +378,22 @@ def import_v1or2_privkey(key):
     pygale.call_error_handler('wrong number of bits in private key')
     return None
   (modulus, key) = gale_pack.pop_rle(key, GALE_RSA_MODULUS_LEN)
-  privkey.rsa.n = openssl.bn.bin2bn(modulus)
+  n = openssl.bn.bin2bn(modulus)
   (pubexp, key) = gale_pack.pop_rle(key, GALE_RSA_MODULUS_LEN)
-  privkey.rsa.e = openssl.bn.bin2bn(pubexp)
+  e = openssl.bn.bin2bn(pubexp)
   (exp, key) = gale_pack.pop_rle(key, GALE_RSA_MODULUS_LEN)
-  privkey.rsa.d = openssl.bn.bin2bn(exp)
+  d = openssl.bn.bin2bn(exp)
+  privkey.rsa.set_key(n, e, d)
   (prime, key) = gale_pack.pop_rle(key, GALE_RSA_PRIME_LEN*2)
-  privkey.rsa.p = openssl.bn.bin2bn(prime[:GALE_RSA_PRIME_LEN])
-  privkey.rsa.q = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN])
+  p = openssl.bn.bin2bn(prime[:GALE_RSA_PRIME_LEN])
+  q = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN])
+  privkey.rsa.set_factors(p, q)
   (primeexp, key) = gale_pack.pop_rle(key, GALE_RSA_PRIME_LEN*2)
-  privkey.rsa.dmp1 = openssl.bn.bin2bn(primeexp[:GALE_RSA_PRIME_LEN])
-  privkey.rsa.dmq1 = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN:])
+  dmp1 = openssl.bn.bin2bn(primeexp[:GALE_RSA_PRIME_LEN])
+  dmq1 = openssl.bn.bin2bn(prime[GALE_RSA_PRIME_LEN:])
   (coef, key) = gale_pack.pop_rle(key, GALE_RSA_PRIME_LEN)
-  privkey.rsa.iqmp = openssl.bn.bin2bn(coef)
+  iqmp = openssl.bn.bin2bn(coef)
+  privkey.rsa.set_crt_params(dmp1, dmq1, iqmp)
   return privkey
 
 def import_privkey(key):
