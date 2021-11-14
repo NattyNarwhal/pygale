@@ -1,6 +1,3 @@
-#
-# $Id: randc.i,v 1.2 2006/07/03 20:38:56 jtr Exp $
-#
 %module randc
 
 %pragma make_default

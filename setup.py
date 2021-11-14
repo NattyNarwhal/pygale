@@ -13,20 +13,6 @@ except ImportError:
 	sys.exit(-1)
 from distutils.core import setup, Extension
 
-def have_swig():
-	# This really only works on unix; it should be implemented in
-	# distutils itself, really
-	# Yucky hack
-	swig_output = os.popen('swig -version 2>&1', 'r').read()
-	if string.find(swig_output, 'SWIG Version 1.1') != -1:
-                sys.stderr.write('SWIG 1.1 is no longer supported with '
-                    ' pygale.  Please upgrade to version 1.3.10 or later.  '
-                    'The maintainer apologizes for the inconvenience.\n')
-	if string.find(swig_output, 'SWIG Version 1.3') != -1:
-		return 1
-	else:
-		return 0
-
 if sys.platform == 'win32':
 	include_dirs = ['/peterh/ext/openssl-0.9.6a/inc32']
 	library_dirs = ['/peterh/ext/openssl-0.9.6a/out32dll']
@@ -47,10 +33,7 @@ sub_module_names = \
 	'rsa',
 ]
 
-if have_swig():
-	extension = '.i'
-else:
-	extension = '.c'
+extension = '.i'
 for module_name in sub_module_names:
 	source_files.append('py-openssl/%sc%s' % (module_name, extension))
 source_files.append('py-openssl/opensslc.c')

@@ -1,6 +1,3 @@
-#
-# $Id: bnc.i,v 1.3 2006/07/12 07:05:25 jtr Exp $
-#
 %module bnc
 
 %pragma make_default

@@ -1,6 +1,3 @@
-#
-# $Id: evpc.i,v 1.4 2006/07/03 20:38:56 jtr Exp $
-#
 %module evpc
 
 %pragma make_default

@@ -1,6 +1,3 @@
-#
-# $Id: rsac.i,v 1.1.1.1 2002/09/03 18:21:25 tlau Exp $
-#
 %module rsac
 
 %pragma make_default
