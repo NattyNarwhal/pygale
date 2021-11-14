@@ -162,7 +162,9 @@ error_cleanup:
 			Py_DECREF(python_strings[i]);
 		}
 	}
-	Py_DECREF(python_iv_string);
+	if (python_iv_string != NULL) {
+		Py_DECREF(python_iv_string);
+	}
 
 cleanup:
 	free(evp_public_keys);
