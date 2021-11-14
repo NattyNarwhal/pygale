@@ -24,16 +24,13 @@ typedef struct BIGNUM;
 
 %typemap(in) BIGNUM *ret
 {
-	char *return_bignum_name;
-
 	if ($input == Py_None)
 	{
 		$1 = NULL;
 	}
 	else
 	{
-		return_bignum_name = PyString_AsString($input);
-		if (SWIG_ConvertPtr(return_bignum_name,
+		if (SWIG_ConvertPtr($input,
                     (void **) &$1, SWIGTYPE_p_BIGNUM, 0)) {
 			PyErr_SetString(PyExc_TypeError,"Type error in argument 3 of BN_bin2bn. Expected _BIGNUM_p.");
 			return NULL;

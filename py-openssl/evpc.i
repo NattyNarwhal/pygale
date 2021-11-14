@@ -115,7 +115,7 @@ python_EVP_SealInit(EVP_CIPHER_CTX* ctx, EVP_CIPHER* type, PyObject* public_keys
 		pkey_object = PyList_GetItem(public_keys, i);
 		pkey_object_name = PyObject_GetAttrString(pkey_object, "ptr");
 		if
-                (SWIG_ConvertPtr(PyString_AsString(pkey_object_name),
+                (SWIG_ConvertPtr(pkey_object_name,
                 (void**) &pkey, SWIGTYPE_p_EVP_PKEY, 0))
 		{
 			PyErr_SetString(PyExc_TypeError, "Type error in list of public keys. Each item should be a evp.PKEY instance.");
