@@ -264,8 +264,10 @@ def import_pubkey(keyobj, callback, trust=0):
 	if rsa_keybits:
 		pubkey = openssl.evp.PKEY()
 		pubkey.assign_RSA(openssl.rsa.RSA())
-		pubkey.rsa.n = openssl.bn.bin2bn(rsa_modulus)
-		pubkey.rsa.e = openssl.bn.bin2bn(rsa_exponent)
+		n = openssl.bn.bin2bn(rsa_modulus)
+		e = openssl.bn.bin2bn(rsa_exponent)
+		d = pubkey.rsa.d
+		pubkey.rsa.set_key(n, e, d)
 		keyobj.setpublic(pubkey)
 	else:
 		# No public key bits in this key
