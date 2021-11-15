@@ -258,6 +258,13 @@ class Puff:
 
     return p
   
+  # utility function
+  def map_recipient_list(self, keyobj):
+    if isinstance(keyobj, sign.Key):
+      return keyobj
+    else:
+      return sign.Key(keyobj)
+  
   # if callback is None, block and return encrypted Puff instance
   # otherwise, call callback with encrypted Puff instance
   # If encryption cannot be performed (perhaps because an empty
@@ -279,7 +286,7 @@ class Puff:
       '' in recipient_list:
       cb(None)
       return
-    keyobjlist = map(sign.Key, recipient_list)
+    keyobjlist = map(self.map_recipient_list, recipient_list)
     if DEBUG & DEBUG_CRYPTO:
       call_debug_handler('Encryption keys: %s' % keyobjlist)
     try:
